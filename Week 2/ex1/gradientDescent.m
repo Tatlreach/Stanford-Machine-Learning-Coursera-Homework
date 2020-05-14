@@ -18,11 +18,23 @@ for iter = 1:num_iters
     %
 
 
-
-
-
-
-
+    % X = whole dataset (m x n)
+    % y = given answers (m x 1)
+    % theta = current scalars (n x 1)
+    % hx = scalars x data = current estimation  (m x 1)
+    
+    % hx-y = vector(m x 1)
+    
+    % goal = update theta
+    % theta = theta -  (alpha/m) * sum(hx - y) * x?
+    % sum across 'm' entries
+    
+    hx = X * theta;
+    %blah = X .* (hx-y);
+    %blah = sum(blah);
+    % theta = theta - ((alpha/m) * blah);
+    
+    theta = theta - (alpha/m) * (X' * (hx-y));
     % ============================================================
 
     % Save the cost J in every iteration    

@@ -26,6 +26,22 @@ sigma = zeros(1, size(X, 2));
 % Hint: You might find the 'mean' and 'std' functions useful.
 %       
 
+% works for all data set sizes (variable feature cnt too)
+
+% sum all columns
+mu = sum(X);   
+% divide each sum by col length
+mu = mu ./ length(X);
+
+%mu = mean(X);
+
+% divide by each entries standard deviation
+% loop X columns??
+% does it do columns separately or whole matrix
+sigma = std(X);
+% isp(mu);
+X_norm = (X - mu) ./ sigma;
+
 
 
 
