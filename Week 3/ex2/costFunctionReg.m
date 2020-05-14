@@ -17,10 +17,23 @@ grad = zeros(size(theta));
 %               Compute the partial derivatives and set grad to the partial
 %               derivatives of the cost w.r.t. each parameter in theta
 
+% Cost Function Regularized
+z = X * theta;
+gz = sigmoid(z);
+J = -(1/m) * (y' * log(gz) + (1-y')*log(1-gz));
 
 
+% remove column 1 from theta!
+theta_2 = theta;
+theta_2(1) = 0;
+J = J + lambda/(2*m) * (theta_2' * theta_2);
 
-
+% Gradient Descent Regularized
+% grad = theta - alpha/m * (X' * (gz - y))
+% grad = (1/m) * (X' * (gz-y))
+% grad = Θj(1-lambda*alpha/m) + (1/m)*(X' * (gz - y))
+% grad = Θj - Θj*lambda*alpha/m + (1/m)*(X' * (gz - y))
+grad = theta_2*(lambda/m) + (1/m)*(X' * (gz - y));
 
 % =============================================================
 

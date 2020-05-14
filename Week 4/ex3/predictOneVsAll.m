@@ -30,10 +30,11 @@ X = [ones(m, 1) X];
 %       for each row.
 %       
 
+% all_theta_sz = size(all_theta)
 
+probs = sigmoid(X * all_theta');
 
-
-
+[~,p] = max(probs, [], 2);  % get index of max in ea row
 
 
 % =========================================================================
