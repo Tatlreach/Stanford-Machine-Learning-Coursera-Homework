@@ -42,8 +42,6 @@ a2 = sigmoid([ones(m,1) X] * Theta1');
 
 a3 = sigmoid([ones(m,1) a2] * Theta2');
 % NOTE: check the correct dimensions here
-% y_out = a2 > 0.5;
-% size(a2)
 
 % recode y to be of 1s, 0s
 training_ans = zeros(m, num_labels);
@@ -92,27 +90,25 @@ for t=1:m,
     yt = y(t,:);
     delta_a3 = (a3 - yt);
     
-    % backpropagate delta
+    % NOTE: NO BIAS UNIT in delta_a3
+    % calc delta_Theta2 = (delta_a3' * a2)
+    % Theta2_sum += delta_Theta2
+    Theta2_grad = Theta2_grad + (delta_a3' * a2);
+    
+    % backpropagate delta_a(l)
         % g'(z(l)) = z(l) .* (1-z(l));
-        % delta2 = (theta2' * delta3) .* gz_prime
-        % add delta_theta vals to delta sum
-        
-    % their a2 = my [1, a2];
-    % my a2 = their sigmoid(z2) = my sigmoid([1 a1] * Theta1')
-        
+        % delta_a(l) = remove_bias(delta_a(l+1) * Theta(l)) .* g'(z(l))
+    
     % NOTE: NO BIAS UNIT  in z2, a3, delta_a3
     gz_prime = sigmoidGradient( z2 );
     
     % NOTE: delta_a3 does NOT have BIAS
     % NOTE: result(delta_a2) has BIAS because Theta2 does
-    delta_a2 = (delta_a3 * Theta2) .* [1 gz_prime];
-    
+    delta_a2 = (delta_a3 * Theta2);
     %remove bias column
     delta_a2 = delta_a2(2:end);
+    delta_a2 = delta_a2 .* gz_prime;
     
-    % calc delta_Theta2(delta_a3' * a2)
-    % add to Theta2_sum
-    Theta2_grad = Theta2_grad + (delta_a3' * a2);
     % NOTE  (K x m) * (m x a2_sz+1) = (K x a2_sz+1) = size(Theta2)
     
     % calc delta_Theta1(delta_a2' * a1)
@@ -138,9 +134,11 @@ Theta2_grad = Theta2_grad/m;
 % NOTE: size(mtrx,2) is col size
 
 % regularize the theta vals
-% set first column to 0
 Theta1_reg = Theta1;
 Theta2_reg = Theta2;
+
+% set first column to 0
+% don't regularize bias component
 Theta1_reg(:, 1) = zeros(size(Theta1,1), 1);
 Theta2_reg(:, 1) = zeros(size(Theta2,1), 1);
 
