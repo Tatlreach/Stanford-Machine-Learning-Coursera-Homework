@@ -36,8 +36,18 @@ error_val = zeros(length(lambda_vec), 1);
 %           ....
 %           
 %       end
-%
-%
+
+for i = 1:length(lambda_vec)
+   % Compute train/cross validation errors using training examples
+   % X(1:i, :) and y(1:i), storing the result in
+   % error_train(i) and error_val(i)
+   lambda = lambda_vec(i);
+   
+   temp_Theta = trainLinearReg(X, y, lambda);
+   
+   error_train(i) = linearRegCostFunction(X, y, temp_Theta, 0);
+   error_val(i) = linearRegCostFunction(Xval, yval, temp_Theta, 0);
+end
 
 
 
