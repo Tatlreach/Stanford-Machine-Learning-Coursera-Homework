@@ -21,6 +21,23 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
+m = size(X,1);
+for i=1:m
+    closest = 1;
+    diff = (X(i, :) - centroids(1, :));
+    min_dist = (diff * diff');
+    for Ki=2:K
+        diff = X(i, :) - centroids(Ki, :);
+        dist = (diff * diff');
+        
+        if dist < min_dist
+            min_dist = dist;
+            closest = Ki;
+        end
+    end
+    
+    idx(i) = closest;
+end
 
 
 

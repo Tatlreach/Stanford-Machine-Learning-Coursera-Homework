@@ -19,9 +19,9 @@ S = zeros(n);
 % Note: When computing the covariance matrix, remember to divide by m (the
 %       number of examples).
 %
+covar = 1.0/m * (X' * X);
 
-
-
+[U, S, ~] = svd(covar);
 
 
 
